@@ -5,6 +5,13 @@ int TEXT_WIDTH = 384;
 int TEXT_HEIGHT = 136;
 int DRAW_WIDTH = 128;
 int DRAW_HEIGHT = 136;
+
+
+const static uint8_t DEBUG = 10;
+const static uint8_t BUZZER = 3;
+const static uint8_t POWER_BUTTON = 20;
+const static uint8_t VBATT = 26;
+
 unsigned long lastState;
 unsigned long lastKey;
 const unsigned long timeState = 1000;
@@ -13,6 +20,8 @@ byte ledState = LOW;
 
 unsigned int counter = 0;
 char buf[15];
+
+
 
 // DAC configuration
 // Select 1.6V ref voltage
@@ -180,6 +189,11 @@ void host_splashscreen(void) {
   SRXELoadBitmapRLE(0, 0, bitmap_logo_rle);
   SRXEWriteString(startHit, 110, "Hit a key         ", FONT_MEDIUM, 3, 1);
   while (!SRXEGetKey()) {
+      if (Serial.available() > 0){
+      String serialData = Serial.readStringUntil('\n');
+      SRXEWriteString(0, 115, serialData, FONT_SMALL, 3, 0);
+    }
+
     currenTime = millis();
     if (currenTime - lastTimeArrow >= pauseArrow) {
       SRXEWriteString(pos, 110, " ", FONT_MEDIUM, 3, 1);
@@ -195,13 +209,13 @@ void host_splashscreen(void) {
 // initialize system
 // display
 void setup() {
-  //Serial.begin(115200);
+  Serial.begin(115200);
 
   setBatStat(); // ADC setup
 
   SRXEInit(0xe7, 0xd6, 0xa2); // initialize and clear display // CS, D/C, RESET
 
-  //Serial.println("SMART Response XE initialized");
+  Serial.println("SMART_Response_XE_initialized");
 
   host_splashscreen();  // displays the splashscreen
 
@@ -220,12 +234,11 @@ void loop() {
     goToSleep();
   }
 
-/*
   if (Serial.available() > 0){
     String serialData = Serial.readStringUntil('\n');
     SRXEWriteString(0, 115, serialData, FONT_SMALL, 3, 0);
   }
-*/
+
   // Every timeState (1s )
   //  get battery state
   //  increment counter
