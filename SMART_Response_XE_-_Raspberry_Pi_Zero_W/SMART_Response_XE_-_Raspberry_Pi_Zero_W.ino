@@ -190,9 +190,9 @@ void host_splashscreen(void) {
   SRXEWriteString(startHit, 110, "Hit a key         ", FONT_MEDIUM, 3, 1);
   while (!SRXEGetKey()) {
       if (Serial.available() > 0){
-      String serialData = Serial.readStringUntil('\n');
-      SRXEWriteString(0, 115, serialData, FONT_SMALL, 3, 0);
-    }
+        String serialData = Serial.readStringUntil('\n');
+        SRXEWriteString(0, 115, serialData, FONT_SMALL, 3, 0);
+      }
 
     currenTime = millis();
     if (currenTime - lastTimeArrow >= pauseArrow) {
@@ -289,6 +289,12 @@ void loop() {
         lastKey = lastState;
       }
 
+      if (key == 'h'){
+        host_splashscreen();
+        initAppDisplay();
+        lastState = millis();
+        lastKey = lastState;
+      }
     }
   }
 }
