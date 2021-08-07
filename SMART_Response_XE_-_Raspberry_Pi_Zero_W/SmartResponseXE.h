@@ -143,5 +143,13 @@ int SRXEFlashWritePage(uint32_t ulAddr, uint8_t *pSrc);
 //
 int SRXEFlashRead(uint32_t ulAddr, uint8_t *pDest, int iLen);
 
-#endif // __SMART_RESPONSE_XE__
+//
+// Draw a string of normal (9x8), small (6x8) or large (15x16) characters
+// At the given col+row
+int SRXEWriteString(int x, int y, String szMsg, int iSize, int iFGColor, int iBGColor);
 
+//
+// Convert String to char*
+char* string2charArr(String string);
+
+#endif // __SMART_RESPONSE_XE__

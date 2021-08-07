@@ -1101,3 +1101,15 @@ byte SRXEGetKey(void)
   return bKey; // 0 if no keys pressed
 } /* SRXEGetKey() */
 
+
+int SRXEWriteString(int x, int y, String szMsg, int iSize, int iFGColor, int iBGColor){
+  char *cstMsg = string2charArr(szMsg);
+  return SRXEWriteString(x, y, cstMsg, iSize, iFGColor, iBGColor);
+}
+
+char* string2charArr(String string){
+  int bufSize = string.length();
+  char buf[bufSize];
+  string.toCharArray(buf, bufSize);
+  return buf;
+}
